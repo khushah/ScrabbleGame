@@ -53,11 +53,60 @@ public class Scrabble {
         return score;
     }
 
-    public String findBest(String letterString) {
-        char[] letters = letterString.toCharArray();
-        Set<Integer> spaceIndices = new HashSet<Integer>();
-        return "";
+    public String findBest(String word) {
+        char[] letters = word.toCharArray();
+        int maxScore = 0;
+        String maxScoreWord = "";
+        word = sortString(word);
+        ArrayList<Integer> spaceIndices = new ArrayList();
+        int spaces = 0;
+        for (int pos = 0; pos < letters.length; pos++){
+            if (letters[pos] == ' '){
+                spaceIndices.add(pos);
+                spaces++;
+            }
+        }
+
+        if (spaces == 0) {
+            maxScoreWord = findBestScore(word);
+            maxScore = findWordScore(maxScoreWord);
+        }
+
+        else if(spaces == 1){
+            for (int charIdx1 = 0; charIdx1 < 26; charIdx1++) {
+                letters[spaceIndices.get(0)] = (char) (97 + charIdx1);
+                String newWord = new String(letters);
+                //System.out.println(newWord);
+                newWord = findBestScore(newWord);
+                int newScore = findWordScore(newWord);
+                if (newScore > maxScore) {
+                    maxScore =  newScore;
+                    maxScoreWord = newWord;
+                }
+            }
+        }
+
+        else {
+            for (int charIdx1 = 0; charIdx1 < 26; charIdx1++) {
+                for (int charIdx2 = 0; charIdx2 < 26; charIdx2++) {
+                    letters[spaceIndices.get(0)] = (char) (97 + charIdx1);
+                    letters[spaceIndices.get(1)] = (char) (97 + charIdx2);
+                    String newWord = new String(letters);
+                    newWord = findBestScore(newWord);
+                    int newScore = findWordScore(newWord);
+                    if (newScore > maxScore) {
+                        maxScore = newScore;
+                        maxScoreWord = newWord;
+                    }
+                }
+            }
+        }
+        if (maxScoreWord == ""){
+            return "No Possibilities";
+        }
+        return maxScore + " : " + map.get(maxScoreWord);
     }
+
 
     public ArrayList<String> generate(String word) {
         ArrayList<String> outputs = new ArrayList<String>();
@@ -84,17 +133,12 @@ public class Scrabble {
                 }
             }
         }
-        if (maxScoreWord == ""){
-            return "No possibilities";
-        }
-        else {
-            return maxScore + " " + map.get(maxScoreWord);
-        }
+        return maxScoreWord;
     }
 
     public static void main(String[] args) {
         Scrabble scrabble = new Scrabble();
         scrabble.populateDictionary("C:\\sowpods.txt");
-        System.out.println(scrabble.findBestScore("cat"));
+        System.out.println(scrabble.findBest("c t "));
     }
 }
