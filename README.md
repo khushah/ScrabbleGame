@@ -8,10 +8,4 @@ Algorithm used-
 -> Compare the power set with the keys in Hash Map to find the list of possible words.
 -> Find the word with maximum score.
 
-USE CASES:
 
-Input: zezuiqr        Output: quizzer 150
-
-Input: tca            Output: cat act 24
-
-Input: t_a            Output: at ta 21
