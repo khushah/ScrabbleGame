@@ -107,16 +107,26 @@ public class Scrabble {
         return maxScore + " : " + map.get(maxScoreWord);
     }
 
+    public ArrayList<String> generate(String word){
+        //System.out.println(word);
+        ArrayList<String> outputs = new ArrayList();
+        outputs = generateInner(outputs, word);
+        return outputs;
+    }
 
-    public ArrayList<String> generate(String word) {
-        ArrayList<String> outputs = new ArrayList<String>();
+
+    public ArrayList<String> generateInner(ArrayList<String> outputs, String word) {
+        //System.out.println(word);
+        //ArrayList<String> outputs = new ArrayList();
         if (word.length() == 1) {
             outputs.add(word);
         }else{
             outputs.add(word);
-            generate(word.substring(0, word.length()-1));
-            generate(word.substring(1, word.length()));
+            generateInner(outputs, word.substring(0, word.length() - 1));
+            generateInner(outputs, word.substring(1, word.length()));
         }
+
+        //System.out.println(outputs);
         return outputs;
     }
 
@@ -139,6 +149,9 @@ public class Scrabble {
     public static void main(String[] args) {
         Scrabble scrabble = new Scrabble();
         scrabble.populateDictionary("C:\\sowpods.txt");
-        System.out.println(scrabble.findBest("c t "));
+        //System.out.println(scrabble.findBest("c t "));
+        //ArrayList<String> temp_list = new ArrayList<>();
+        System.out.println(scrabble.generate("abc"));
+
     }
 }
