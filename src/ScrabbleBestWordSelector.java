@@ -5,23 +5,13 @@ import java.util.*;
 /**
  * Created by test on 7/23/2015.
  */
-public class Scrabble {
+public class ScrabbleBestWordSelector {
     private Map<String, String> map = new HashMap<String, String>();
 
-    public String sortString(String original) {
-        char[] chars = original.toCharArray();
-        Arrays.sort(chars);
-        String sorted = new String(chars);
-        return sorted;
-    }
-
-    public void addToHash(String word){
-        String sortedWord = sortString(word);
-        if (map.containsKey(sortedWord)) {
-            map.put(sortedWord, map.get(sortedWord) + " " + word);
-        } else {
-            map.put(sortedWord, word);
-        }
+    public static void main(String[] args) {
+        ScrabbleBestWordSelector bestWordSelector = new ScrabbleBestWordSelector();
+        bestWordSelector.populateDictionary("C:\\sowpods.txt");
+        System.out.println(bestWordSelector.findBestScore("jeataae"));
     }
 
     public void populateDictionary(String path){
@@ -41,6 +31,22 @@ public class Scrabble {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public String sortWord(String original) {
+        char[] chars = original.toCharArray();
+        Arrays.sort(chars);
+        String sorted = new String(chars);
+        return sorted;
+    }
+
+    public void addToHash(String word){
+        String sortedWord = sortWord(word);
+        if (map.containsKey(sortedWord)) {
+            map.put(sortedWord, map.get(sortedWord) + " " + word);
+        } else {
+            map.put(sortedWord, word);
         }
     }
 
@@ -84,7 +90,7 @@ public class Scrabble {
             String subset = "";
             for (Integer idx: s) {
                 subset += letters[idx];
-                String sortedString = sortString(subset);
+                String sortedString = sortWord(subset);
                 if (map.containsKey(sortedString)) {
                     int newScore = findWordScore(sortedString);
                     if (maxScore < newScore) {
@@ -102,10 +108,4 @@ public class Scrabble {
         }
     }
 
-
-    public static void main(String[] args) {
-        Scrabble scrabble = new Scrabble();
-        scrabble.populateDictionary("C:\\sowpods.txt");
-        System.out.println(scrabble.findBestScore("jeataae"));
-    }
 }

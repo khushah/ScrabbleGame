@@ -1,13 +1,13 @@
 /**
  * Created by test on 7/23/2015.
  */
-class ScrabbleTest extends groovy.util.GroovyTestCase {
+class ScrabbleBestWordSelectorTest extends groovy.util.GroovyTestCase {
     void testSortString() {
-        Scrabble scrabble = new Scrabble();
-        assert(scrabble.sortString("bcda")) == "abcd";
-        assert(scrabble.sortString("xyz")) == "xyz";
-        assert(scrabble.sortString("a")) == "a";
-        assert(scrabble.sortString("")) == "";
+        ScrabbleBestWordSelector selector= new ScrabbleBestWordSelector();
+        assert(selector.sortWord("bcda")) == "abcd";
+        assert(selector.sortWord("xyz")) == "xyz";
+        assert(selector.sortWord("a")) == "a";
+        assert(selector.sortWord("")) == "";
     }
 
 
@@ -16,16 +16,7 @@ class ScrabbleTest extends groovy.util.GroovyTestCase {
     }
 
     void testGenerate() {
-        Scrabble scrabble = new Scrabble();
-        ArrayList<String> subsets = new ArrayList();
-        subsets.add('a');
-        subsets.add('b');
-        subsets.add('c');
-        subsets.add('ab');
-        subsets.add('ac');
-        subsets.add('bc');
-        subsets.add('abc');
-        assert Arrays.equals(subsets, scrabble.generate("abc"))
+
     }
 
     void testFindBestScore() {
