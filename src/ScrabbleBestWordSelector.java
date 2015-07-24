@@ -10,8 +10,8 @@ public class ScrabbleBestWordSelector {
 
     public static void main(String[] args) {
         ScrabbleBestWordSelector bestWordSelector = new ScrabbleBestWordSelector();
-        bestWordSelector.populateDictionary("C:\\sowpods.txt");
-        System.out.println(bestWordSelector.findBestScore("zzquier"));
+        bestWordSelector.populateDictionary(args[0]);
+        System.out.println(bestWordSelector.findBestScore(args[1]));
     }
 
     public void populateDictionary(String path){
