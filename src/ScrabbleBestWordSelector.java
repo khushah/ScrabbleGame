@@ -107,5 +107,4 @@ public class ScrabbleBestWordSelector {
             return maxScore + " " + AnagramCollection.get(maxScoreWord);
         }
     }
-
 }
