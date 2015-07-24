@@ -34,11 +34,11 @@ public class ScrabbleBestWordSelector {
         }
     }
 
-    public String sortWord(String original) {
-        char[] chars = original.toCharArray();
+    public String sortWord(String originalWord) {
+        char[] chars = originalWord.toCharArray();
         Arrays.sort(chars);
-        String sorted = new String(chars);
-        return sorted;
+        String sortedWord = new String(chars);
+        return sortedWord;
     }
 
     public void addToHash(String word){
@@ -77,25 +77,27 @@ public class ScrabbleBestWordSelector {
         }
         return sets;
     }
+    
+    
 
-    public String findBestScore(String letterString) {
-        char[] letters = letterString.toCharArray();
-        Set<Integer> mySet = new HashSet<Integer>();
+    public String findBestScore(String rackAsString) {
+        char[] rackLetters = rackAsString.toCharArray();
+        Set<Integer> rackLetterSet = new HashSet<Integer>();
         int maxScore = 0;
         String maxScoreWord = "";
-        for (int idx = 0; idx < letters.length; idx++) {
-            mySet.add(idx);
+        for (int idx = 0; idx < rackLetters.length; idx++) {
+            rackLetterSet.add(idx);
         }
-        for (Set<Integer> s : powerSet(mySet)) {
-            String subset = "";
+        for (Set<Integer> s : powerSet(rackLetterSet)) {
+            String rackSubset = "";
             for (Integer idx: s) {
-                subset += letters[idx];
-                String sortedString = sortWord(subset);
-                if (AnagramCollection.containsKey(sortedString)) {
-                    int newScore = findWordScore(sortedString);
+                rackSubset += rackLetters[idx];
+                String sortedWord = sortWord(rackSubset);
+                if (AnagramCollection.containsKey(sortedWord)) {
+                    int newScore = findWordScore(sortedWord);
                     if (maxScore < newScore) {
                         maxScore = newScore;
-                        maxScoreWord = sortedString;
+                        maxScoreWord = sortedWord;
                     }
                 }
             }
