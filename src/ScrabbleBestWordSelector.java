@@ -11,7 +11,7 @@ public class ScrabbleBestWordSelector {
     public static void main(String[] args) {
         ScrabbleBestWordSelector bestWordSelector = new ScrabbleBestWordSelector();
         bestWordSelector.populateDictionary("C:\\sowpods.txt");
-        System.out.println(bestWordSelector.findBestScore("jeataae"));
+        System.out.println(bestWordSelector.findBestScore("zzquier"));
     }
 
     public void populateDictionary(String path){

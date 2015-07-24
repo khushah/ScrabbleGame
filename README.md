@@ -1,5 +1,8 @@
 # Scrabble Best Word Selector
 
+-   Every letter has an associated score and the score of a word is comouted as the sum of the scores of its constituent letters.
+-   given a rack of 7 letters, suggests the word with the best score.
+
 Algorithm used
 
 -   From the list of words in the dictionary, generate a Hash Map wherein key value is the sorted sequence of letters in that       word and value is a list of anagrams.
