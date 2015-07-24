@@ -6,7 +6,7 @@ import java.util.*;
  * Created by test on 7/23/2015.
  */
 public class ScrabbleBestWordSelector {
-    private Map<String, String> map = new HashMap<String, String>();
+    private Map<String, String> AnagramCollection = new HashMap<String, String>();
 
     public static void main(String[] args) {
         ScrabbleBestWordSelector bestWordSelector = new ScrabbleBestWordSelector();
@@ -43,10 +43,10 @@ public class ScrabbleBestWordSelector {
 
     public void addToHash(String word){
         String sortedWord = sortWord(word);
-        if (map.containsKey(sortedWord)) {
-            map.put(sortedWord, map.get(sortedWord) + " " + word);
+        if (AnagramCollection.containsKey(sortedWord)) {
+            AnagramCollection.put(sortedWord, AnagramCollection.get(sortedWord) + " " + word);
         } else {
-            map.put(sortedWord, word);
+            AnagramCollection.put(sortedWord, word);
         }
     }
 
@@ -91,7 +91,7 @@ public class ScrabbleBestWordSelector {
             for (Integer idx: s) {
                 subset += letters[idx];
                 String sortedString = sortWord(subset);
-                if (map.containsKey(sortedString)) {
+                if (AnagramCollection.containsKey(sortedString)) {
                     int newScore = findWordScore(sortedString);
                     if (maxScore < newScore) {
                         maxScore = newScore;
@@ -104,7 +104,7 @@ public class ScrabbleBestWordSelector {
             return "No possibilities";
         }
         else {
-            return maxScore + " " + map.get(maxScoreWord);
+            return maxScore + " " + AnagramCollection.get(maxScoreWord);
         }
     }
 
