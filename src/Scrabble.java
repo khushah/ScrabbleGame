@@ -53,105 +53,59 @@ public class Scrabble {
         return score;
     }
 
-    public String findBest(String word) {
-        char[] letters = word.toCharArray();
+    public static <Integer> Set<Set<Integer>> powerSet(Set<Integer> originalSet) {
+        Set<Set<Integer>> sets = new HashSet<Set<Integer>>();
+        if (originalSet.isEmpty()) {
+            sets.add(new HashSet<Integer>());
+            return sets;
+        }
+        List<Integer> list = new ArrayList<Integer>(originalSet);
+        Integer head = list.get(0);
+        Set<Integer> rest = new HashSet<Integer>(list.subList(1, list.size()));
+        for (Set<Integer> set : powerSet(rest)) {
+            Set<Integer> newSet = new HashSet<Integer>();
+            newSet.add(head);
+            newSet.addAll(set);
+            sets.add(newSet);
+            sets.add(set);
+        }
+        return sets;
+    }
+
+    public String findBestScore(String letterString) {
+        char[] letters = letterString.toCharArray();
+        Set<Integer> mySet = new HashSet<Integer>();
         int maxScore = 0;
         String maxScoreWord = "";
-        word = sortString(word);
-        ArrayList<Integer> spaceIndices = new ArrayList();
-        int spaces = 0;
-        for (int pos = 0; pos < letters.length; pos++){
-            if (letters[pos] == ' '){
-                spaceIndices.add(pos);
-                spaces++;
-            }
+        for (int idx = 0; idx < letters.length; idx++) {
+            mySet.add(idx);
         }
-
-        if (spaces == 0) {
-            maxScoreWord = findBestScore(word);
-            maxScore = findWordScore(maxScoreWord);
-        }
-
-        else if(spaces == 1){
-            for (int charIdx1 = 0; charIdx1 < 26; charIdx1++) {
-                letters[spaceIndices.get(0)] = (char) (97 + charIdx1);
-                String newWord = new String(letters);
-                //System.out.println(newWord);
-                newWord = findBestScore(newWord);
-                int newScore = findWordScore(newWord);
-                if (newScore > maxScore) {
-                    maxScore =  newScore;
-                    maxScoreWord = newWord;
-                }
-            }
-        }
-
-        else {
-            for (int charIdx1 = 0; charIdx1 < 26; charIdx1++) {
-                for (int charIdx2 = 0; charIdx2 < 26; charIdx2++) {
-                    letters[spaceIndices.get(0)] = (char) (97 + charIdx1);
-                    letters[spaceIndices.get(1)] = (char) (97 + charIdx2);
-                    String newWord = new String(letters);
-                    newWord = findBestScore(newWord);
-                    int newScore = findWordScore(newWord);
-                    if (newScore > maxScore) {
+        for (Set<Integer> s : powerSet(mySet)) {
+            String subset = "";
+            for (Integer idx: s) {
+                subset += letters[idx];
+                String sortedString = sortString(subset);
+                if (map.containsKey(sortedString)) {
+                    int newScore = findWordScore(sortedString);
+                    if (maxScore < newScore) {
                         maxScore = newScore;
-                        maxScoreWord = newWord;
+                        maxScoreWord = sortedString;
                     }
                 }
             }
         }
         if (maxScoreWord == ""){
-            return "No Possibilities";
+            return "No possibilities";
         }
-        return maxScore + " : " + map.get(maxScoreWord);
-    }
-
-    public ArrayList<String> generate(String word){
-        //System.out.println(word);
-        ArrayList<String> outputs = new ArrayList();
-        outputs = generateInner(outputs, word);
-        return outputs;
-    }
-
-
-    public ArrayList<String> generateInner(ArrayList<String> outputs, String word) {
-        //System.out.println(word);
-        //ArrayList<String> outputs = new ArrayList();
-        if (word.length() == 1) {
-            outputs.add(word);
-        }else{
-            outputs.add(word);
-            generateInner(outputs, word.substring(0, word.length() - 1));
-            generateInner(outputs, word.substring(1, word.length()));
+        else {
+            return maxScore + " " + map.get(maxScoreWord);
         }
-
-        //System.out.println(outputs);
-        return outputs;
     }
 
-    public String findBestScore(String word) {
-        int maxScore = 0;
-        String maxScoreWord = "";
-        for (String wordSubset : generate(word)) {
-            wordSubset = sortString(wordSubset);
-            if (map.containsKey(wordSubset)) {
-                int newScore = findWordScore(wordSubset);
-                if (maxScore < newScore) {
-                    maxScore = newScore;
-                    maxScoreWord = wordSubset;
-                }
-            }
-        }
-        return maxScoreWord;
-    }
 
     public static void main(String[] args) {
         Scrabble scrabble = new Scrabble();
         scrabble.populateDictionary("C:\\sowpods.txt");
-        //System.out.println(scrabble.findBest("c t "));
-        //ArrayList<String> temp_list = new ArrayList<>();
-        System.out.println(scrabble.generate("abc"));
-
+        System.out.println(scrabble.findBestScore("jeataae"));
     }
 }
